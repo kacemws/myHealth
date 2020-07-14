@@ -23,10 +23,15 @@ class MyApp extends StatelessWidget {
 
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.white,
-      statusBarIconBrightness: Brightness.light,
+      statusBarIconBrightness: Brightness.dark,
       systemNavigationBarColor: Colors.white,
-      systemNavigationBarIconBrightness: Brightness.light
+      systemNavigationBarIconBrightness: Brightness.dark
     ));
+
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
 
     return MultiProvider(
 
@@ -96,7 +101,7 @@ class MyApp extends StatelessWidget {
           ),
 
           primaryColor: Colors.white,
-          primarySwatch: Colors.white,
+          primarySwatch: Colors.purple
         ),
           
         home: StreamBuilder(

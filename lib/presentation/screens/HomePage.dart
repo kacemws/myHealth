@@ -7,7 +7,7 @@ class HomePage extends StatelessWidget {
     return Container(
       height: double.infinity,
       width: double.infinity,
-      color: Colors.grey[200],
+      color: Colors.white,
     );
   }
 }

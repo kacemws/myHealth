@@ -71,10 +71,12 @@ class _MainAppScreenState extends State<MainAppScreen> {
         ) 
       ),
 
-      bottomNavigationBar: Container(
-        height: _height *0.1,
-        width: double.infinity,
-        child: BottomNavigation(current : currentIndex, handler : update)
+      bottomNavigationBar: Consumer<Health>(
+        builder: (context, health,_) => health.loaded? Container(
+          height: _height *0.1,
+          width: double.infinity,
+          child: BottomNavigation(current : currentIndex, handler : update)
+        ) : SizedBox()
       ),
     );
 

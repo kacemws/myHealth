@@ -29,8 +29,8 @@ class _SignupScreenState extends State<SignupScreen> {
   Map<String,Object> _userInfos = {
     "firstName" : "",
     "lastName" : "",
-    "numPermis" : "",
-    "telephone" : "",
+    "height" : "",
+    "weight" : "",
     "Birthdate" : "",
     "email" : "",
     "password" : ""
@@ -117,8 +117,8 @@ class _SignupScreenState extends State<SignupScreen> {
           prenom: _userInfos["lastName"],
           birthday: _userInfos["Birthdate"],
           email: _userInfos["email"],
-          taille: _userInfos["height"],
-          poids: _userInfos["weight"],
+          taille: double.parse(_userInfos["height"]),
+          poids: double.parse(_userInfos["weight"]),
           plan: null,
           objectif: null
         );
@@ -189,7 +189,7 @@ class _SignupScreenState extends State<SignupScreen> {
               ),
 
               SizedBox( // some space before the main title
-                height: _height * 0.1,
+                height: _height * 0.05,
               ),
 
               Container(
@@ -205,7 +205,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     Text(
                       "UP",
                       style: Theme.of(context).textTheme.display1.copyWith(
-                        color: Colors.amber,
+                        color: Colors.purple[900],
                       ),
                     ),
 
@@ -229,10 +229,16 @@ class _SignupScreenState extends State<SignupScreen> {
                     children: <Widget>[
 
                       TextFormField(
-
+                        cursorColor: Colors.purple[900],
                         decoration: InputDecoration(
                           labelText: "Nom",
-                          labelStyle: Theme.of(context).textTheme.body2
+                          labelStyle: Theme.of(context).textTheme.body2,
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.purple[900],
+                              width: 1.5
+                            )
+                          )
                         ),
 
                         onFieldSubmitted: (_){
@@ -245,7 +251,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         },
 
                         onSaved: (value){
-                          _userInfos["firstName"] = value;
+                          _userInfos["lastName"] = value;
                         },
 
                         textInputAction: TextInputAction.next,
@@ -257,10 +263,16 @@ class _SignupScreenState extends State<SignupScreen> {
                       ),
 
                       TextFormField(
-
+                        cursorColor: Colors.purple[900],
                         decoration: InputDecoration(
                           labelText: "Prenom",
                           labelStyle: Theme.of(context).textTheme.body2,
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.purple[900],
+                              width: 1.5
+                            )
+                          )
                         ),
 
                         focusNode: _lastNameField,
@@ -276,7 +288,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         },
 
                         onSaved: (value){
-                          _userInfos["lastName"] = value;
+                          _userInfos["firstName"] = value;
                         },                      
 
                       ),
@@ -284,7 +296,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       
 
                       SizedBox(
-                        height: _height * 0.015,
+                        height: _height * 0.045,
                       ),
 
                       Container(
@@ -299,35 +311,43 @@ class _SignupScreenState extends State<SignupScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween, 
                           children: [
                             Text((selectedDate == null)?"Choisir une date" : "date choisie :"+ DateFormat.yMd().format(selectedDate), style: Theme.of(context).textTheme.button,),
-                            IconButton(icon: Icon(Icons.calendar_today),onPressed: selectdate,color: Colors.amber,)
+                            IconButton(icon: Icon(Icons.calendar_today),onPressed: selectdate,color: Colors.purple[900],)
                           ],
                         ),
                       ),
 
                       SizedBox(
-                        height: _height *0.015,
+                        height: _height *0.0025,
                       ),
 
                       TextFormField(
+                        cursorColor: Colors.purple[900],
                         decoration: InputDecoration(
-                          labelText: "Numero de permis",
+                          labelText: "Email",
                           labelStyle: Theme.of(context).textTheme.body2,
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.purple[900],
+                              width: 1.5
+                            )
+                          )
                         ),
 
                         focusNode: _numPermisField,
 
                         textInputAction: TextInputAction.next,
+                        keyboardType: TextInputType.emailAddress,
 
                         onFieldSubmitted: (_){
                           FocusScope.of(context).requestFocus(_telephoneField); // move to the other textfield
                         },
 
                         validator: (value){
-                          return value.isEmpty? "insert an id" : null;
+                          return value.isEmpty || !value.contains("@")? "insert a valid email" : null;
                         },
 
                         onSaved: (value){
-                          _userInfos["numPermis"] = value;
+                          _userInfos["email"] = value;
                         },   
 
                       ),
@@ -337,9 +357,16 @@ class _SignupScreenState extends State<SignupScreen> {
                       ),
 
                       TextFormField(
+                        cursorColor: Colors.purple[900],
                         decoration: InputDecoration(
-                          labelText: "Numero de telephone",
+                          labelText: "Taille",
                           labelStyle: Theme.of(context).textTheme.body2,
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.purple[900],
+                              width: 1.5
+                            )
+                          )
                         ),
 
                         focusNode: _telephoneField,
@@ -352,11 +379,11 @@ class _SignupScreenState extends State<SignupScreen> {
                         },
 
                         validator: (value){
-                          return value.isEmpty? "insert a valid phone number" : null;
+                          return value.isEmpty? "insert a valid height" : null;
                         },
 
                         onSaved: (value){
-                          _userInfos["telephone"] = value;
+                          _userInfos["height"] = value;
                         },   
                       ),
 
@@ -365,38 +392,53 @@ class _SignupScreenState extends State<SignupScreen> {
                       ),
 
                       TextFormField(
+                        cursorColor: Colors.purple[900],
                         decoration: InputDecoration(
-                          labelText: "Email",
+                          labelText: "Poids",
                           labelStyle: Theme.of(context).textTheme.body2,
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.purple[900],
+                              width: 1.5
+                            )
+                          )
                         ),
 
                         focusNode: _emailField,
 
                         textInputAction: TextInputAction.next,
-                        keyboardType: TextInputType.emailAddress,
+                        keyboardType: TextInputType.number,
 
                         onFieldSubmitted: (_){
                           FocusScope.of(context).requestFocus(_passwordField); // move to the other textfield
                         },
 
                         validator: (value){
-                          return value.isEmpty || !value.contains("@")? "insert a valid email" : null;
+                          return value.isEmpty ?"insert a valid weight" : null;
                         },
 
                         onSaved: (value){
-                          _userInfos["email"] = value;
+                          _userInfos["weight"] = value;
                         },   
                       ),
                       SizedBox(
                         height: _height * 0.015,
                       ),
                       TextFormField(
-
+                        cursorColor: Colors.purple[900],
                         decoration: InputDecoration(
                           labelText: "Mot de passe",
                           labelStyle: Theme.of(context).textTheme.body2,
 
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.purple[900],
+                              width: 1.5
+                            )
+                          ),
+
                           suffixIcon: IconButton(
+                            color: Colors.purple[900],
                             icon: Icon(_hidePassword? Icons.visibility : Icons.visibility_off), 
                             onPressed: switchToggle
                           ),
@@ -430,9 +472,16 @@ class _SignupScreenState extends State<SignupScreen> {
                       ),
 
                       TextFormField(
+                        cursorColor: Colors.purple[900],
                         decoration: InputDecoration(
                           labelText: "Confirmez Mot de passe",
                           labelStyle: Theme.of(context).textTheme.body2,
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.purple[900],
+                              width: 1.5
+                            )
+                          )
                         ),
                   
                         textInputAction: TextInputAction.done,
@@ -462,7 +511,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 width: _width * 0.55,
                 child: _isloading? Center(child: CircularProgressIndicator(),) : RaisedButton(
                   onPressed: () => _saveFields(),
-                  color: Colors.amber,
+                  color: Colors.purple[900],
 
                   child: Text(
                     "Signup",

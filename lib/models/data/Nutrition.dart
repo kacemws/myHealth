@@ -2,8 +2,9 @@
 import 'package:flutter/foundation.dart';
 
 class Nutrition{
-  final double kcalVise;
-  final double kcalConsome;
+  final id;
+  int kcalVise;
+  int kcalConsome;
 
-  Nutrition({@required this.kcalVise, @required this.kcalConsome});
+  Nutrition({@required this.id, @required this.kcalVise, @required this.kcalConsome});
 }

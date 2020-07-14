@@ -113,6 +113,7 @@ class _AuthentificationState extends State<Authentification> {
                 margin: EdgeInsets.symmetric(vertical: _height * 0.0075, horizontal: _width * 0.08),
                 alignment: Alignment.topLeft,
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
                       "My",
@@ -144,9 +145,17 @@ class _AuthentificationState extends State<Authentification> {
 
                       TextFormField(
 
+                        cursorColor: Colors.purple[900],
                         decoration: InputDecoration(
                           labelText: "Email",
-                          labelStyle: Theme.of(context).textTheme.body2
+                          labelStyle: Theme.of(context).textTheme.body2,
+
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.purple[900],
+                              width: 1.5
+                            )
+                          )
                         ),
 
                         onFieldSubmitted: (_){
@@ -173,17 +182,23 @@ class _AuthentificationState extends State<Authentification> {
                       ),
 
                       TextFormField(
+                        cursorColor: Colors.purple[900],
 
                         decoration: InputDecoration(
-
                           labelText: "Mot de passe",
                           labelStyle: Theme.of(context).textTheme.body2,
 
                           suffixIcon: IconButton(
+                            color: Colors.purple[900],
                             icon: Icon(_hidePassword? Icons.visibility_off : Icons.visibility ), 
                             onPressed: switchToggle
                           ),
-
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.purple[900],
+                              width: 1.5
+                            )
+                          )
                         ),
 
                         focusNode: passwordField,
@@ -231,7 +246,7 @@ class _AuthentificationState extends State<Authentification> {
                 width: _width * 0.55,
                 child: _isloading? Center(child: CircularProgressIndicator()) : RaisedButton(
                   onPressed: () => _saveFields(),
-                  color: Colors.amber,
+                  color: Colors.purple[900],
 
                   child: Text(
                     "Login",
@@ -281,7 +296,7 @@ class _AuthentificationState extends State<Authentification> {
 
                       child:Text(
                         " Inscrivez-Vous",
-                        style: TextStyle(fontSize: 20,fontWeight: FontWeight.w300,color: Colors.amber),
+                        style: TextStyle(fontSize: 20,fontWeight: FontWeight.w300,color: Colors.purple[900]),
                       ),
 
                     )

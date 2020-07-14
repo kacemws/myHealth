@@ -81,17 +81,17 @@ class Health with ChangeNotifier{
   Future<void> fetchData() async{
 
 
-    await this.fetchObjectifs();
-    print("got objectifs");
+    // await this.fetchObjectifs();
+    // print("got objectifs");
 
-    await this.fetchExercices();
-    print("got exercices");
+    // await this.fetchExercices();
+    // print("got exercices");
 
     await this.fetchUser();
     print("got user");
     
-    await this.fetchActivities();
-    print("got user's activities");
+    // await this.fetchActivities();
+    // print("got user's activities");
 
     loaded = true;
     print("done");
@@ -126,15 +126,17 @@ class Health with ChangeNotifier{
         objectif : null
       );
 
-      final planData = await _db.collection("Plans").document(extractedData["plan"]).get();
-
+      final plan = await _db.collection("Plans").document(extractedData["plan"]).get();
+      final planData = plan.data;
       aux.plan = Nutrition(
+        id : plan.documentID,
         kcalConsome: planData["kcalConsome"],
-        kcalVise: planData["kcalVise"],
+        kcalVise:planData["kcalVise"],
       );
 
+      print("found nutrition : " + aux.plan.id + " for user : "+ aux.id);
+
       loggedIn = aux;
-      print(loggedIn.id);
 
     }catch(error){
       print(error.toString());

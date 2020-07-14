@@ -55,7 +55,7 @@ class BottomNavigation extends StatelessWidget {
             duration: Duration(milliseconds: 500),
             height :3.75,
             alignment: Alignment.topCenter,
-            color: index == current?Colors.amber : Colors.white,
+            color: index == current?Colors.purple[900] : Colors.white,
           ),
 
           GestureDetector(
