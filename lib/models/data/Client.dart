@@ -1,6 +1,5 @@
 
 import 'package:flutter/foundation.dart';
-import 'package:health_app/models/HttpException.dart';
 
 import 'Activite.dart';
 import 'Exercice.dart';

@@ -60,7 +60,7 @@ class Health with ChangeNotifier{
   }
 
   List<Exercice> exercicesRecommande() {
-
+    return _exercices;
     List<Exercice> doneExercies = loggedIn.doneExercices();
     List<Exercice> aux = [];
 
@@ -81,11 +81,11 @@ class Health with ChangeNotifier{
   Future<void> fetchData() async{
 
 
-    // await this.fetchObjectifs();
-    // print("got objectifs");
+    await this.fetchObjectifs();
+    print("got objectifs");
 
-    // await this.fetchExercices();
-    // print("got exercices");
+    await this.fetchExercices();
+    print("got exercices");
 
     await this.fetchUser();
     print("got user");
@@ -228,35 +228,37 @@ class Health with ChangeNotifier{
 
     return Objectif(
       id: document.documentID, 
-      name: data["name"] ?? "", 
+      nom: data["name"] ?? "", 
+      imageUrl: data["imageUrl"]
     );
 
   }
 
   ExoPhysique exoPhysiqueFromDocument(DocumentSnapshot document){
     var data = document.data ?? {};
-
+    print(data["name"]);
     return ExoPhysique(
       id: document.documentID, 
-      nom: data["name"] ?? "", 
-      duree: double.parse(data["duree"]) ?? 0.0,
-      etapes: data["etapes"] ?? {}, 
+      nom: data["name"], 
+      duree: data["duree"] ?? 0.0,
+      etapes: Map<String,String>.from(data["etapes"]), 
       difficulte: getDifficulte(data["difficulte"]), 
       objectif: getObjectifById(data["objectif"]), 
-      kcal: double.parse(data["kcal"]) ?? 0.0,
+      kcal: data["kcal"] ?? 0,
+      imageUrl: data["imageUrl"]
     );
   }
 
   ExoCognitif exoCognitifFromDocument(DocumentSnapshot document){
     var data = document.data ?? {};
-    
     return ExoCognitif(
       id: document.documentID, 
-      nom: data["name"] ?? "", 
-      duree: double.parse(data["duree"]) ?? 0.0,
-      etapes: data["etapes"] ?? {}, 
+      nom: data["name"], 
+      duree: data["duree"] ?? 0.0,
+      etapes: Map<String,String>.from(data["etapes"]), 
       difficulte: getDifficulte(data["difficulte"]),
-      objectif: getObjectifById(data["objectif"]), 
+      objectif: getObjectifById(data["objectif"]),
+      imageUrl: data["imageUrl"]
     );
   }
 }

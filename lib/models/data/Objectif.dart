@@ -2,13 +2,14 @@ import 'package:flutter/foundation.dart';
 
 import 'Exercice.dart';
 
-class Objectif{
+class Objectif with ChangeNotifier{
   final String id;
-  final String name;
+  final String nom;
+  final String imageUrl;
 
   List<Exercice> exercices;
 
-  Objectif({@required this.id, @required this.name}){
+  Objectif({@required this.id, @required this.nom, @required this.imageUrl}){
     this.exercices = [];
   }
 

@@ -15,7 +15,7 @@ MyHealth is an app that can help it users acheive certain goals, and that by doi
 :white_check_mark: add authentification pages. <br/>
 :white_check_mark: redirect user after authentification <br/>
 :white_check_mark: check if user is already loggedin when launching app <br/>
-:black_square_button: add homescreen. <br/>
+:white_check_mark: add homescreen. <br/>
 :black_square_button: add objectif details screen. <br/>
 :black_square_button: add exercice details screen. <br/>
 :black_square_button: add handler to follow objectif. <br/>

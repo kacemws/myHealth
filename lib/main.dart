@@ -22,9 +22,9 @@ class MyApp extends StatelessWidget {
     
 
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Colors.white,
+      statusBarColor: Colors.grey[100],
       statusBarIconBrightness: Brightness.dark,
-      systemNavigationBarColor: Colors.white,
+      systemNavigationBarColor: Colors.grey[100],
       systemNavigationBarIconBrightness: Brightness.dark
     ));
 
@@ -100,7 +100,7 @@ class MyApp extends StatelessWidget {
             ),
           ),
 
-          primaryColor: Colors.white,
+          primaryColor: Colors.grey[100],
           primarySwatch: Colors.purple
         ),
           

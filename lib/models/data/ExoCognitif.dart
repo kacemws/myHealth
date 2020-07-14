@@ -5,13 +5,14 @@ import 'Difficulte.dart';
 import 'Objectif.dart';
 
 class ExoCognitif extends Exercice{
-  ExoCognitif({@required String id, @required String nom, @required double duree, @required Map<String,String> etapes, @required Difficulte difficulte, @required Objectif objectif}) : super(
+  ExoCognitif({@required String id, @required String nom, @required int duree, @required Map<String,String> etapes,@required String imageUrl, @required Difficulte difficulte, @required Objectif objectif}) : super(
     id : id, 
     nom : nom, 
     duree : duree, 
     etapes : etapes, 
     difficulte : difficulte, 
-    objectif : objectif
+    objectif : objectif,
+    imageUrl : imageUrl
   );
 
 }
