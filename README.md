@@ -6,11 +6,11 @@ A Flutter Project
 MyHealth is an app that can help it users acheive certain goals, and that by doing exercices from diffrent levels.
 
 ## TODO
-[X] init repo
-[X] add needed packages
-[X] add functions that fetch data
+[x] init repo
+[x] add needed packages
+[x] add functions that fetch data
 [] add firebase to project
-[X] add authentification pages
+[x] add authentification pages
 [] add homescreen
 [] add objectif details screen
 [] add exercice details screen
