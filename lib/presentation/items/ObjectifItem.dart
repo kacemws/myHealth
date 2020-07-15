@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:health_app/presentation/screens/ObjectifDetails.dart';
 
 import 'package:provider/provider.dart';
 
@@ -8,10 +9,10 @@ import 'package:health_app/models/data/Objectif.dart';
 class ObjectifItem extends StatelessWidget {
 
   showDetails(dynamic context, id){
-    // Navigator.of(context).pushNamed(
-    //   StationDetails.route,
-    //   arguments: id,
-    // );
+    Navigator.of(context).pushNamed(
+      ObjectifDetails.route,
+      arguments: id,
+    );
   }
 
   @override
@@ -52,15 +53,6 @@ class ObjectifItem extends StatelessWidget {
 
           child: Stack(
             children: <Widget>[
-              // ClipRRect(
-
-              //   child: Container(
-              //     height: double.infinity,
-              //     width: double.infinity,
-              //     color: Colors.purple[100],
-              //   ),
-              //   borderRadius: BorderRadius.circular(15),
-              // ),
               Hero(
                 tag: objectif.id,
                 child: ClipRRect(/*Force a widget to be inside of the mother widget border*/
