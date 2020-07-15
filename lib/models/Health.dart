@@ -60,7 +60,6 @@ class Health with ChangeNotifier{
   }
 
   List<Exercice> exercicesRecommande() {
-    return _exercices;
     List<Exercice> doneExercies = loggedIn.doneExercices();
     List<Exercice> aux = [];
 
@@ -90,8 +89,11 @@ class Health with ChangeNotifier{
     await this.fetchUser();
     print("got user");
     
-    // await this.fetchActivities();
-    // print("got user's activities");
+    await this.fetchActivities();
+    print("got user's activities");
+
+    await this.fetchFollowed();
+    print("got user's followed Objectifs");
 
     loaded = true;
     print("done");
@@ -219,6 +221,63 @@ class Health with ChangeNotifier{
       });
 
     }catch(error){
+      throw error;
+    }
+  }
+
+  Future<void> fetchFollowed() async{
+    try{
+
+      final snapshot = await _db.collection("Followed").getDocuments();
+      loggedIn.followedObjectifs = [];
+
+      snapshot.documents.forEach((document) async{
+
+        if(document.data["user"] == loggedIn.id){
+          print("got followed objectif "+document.documentID);
+          this.loggedIn.followedObjectifs.add(getObjectifById(document.data["objectif"]));
+        }
+        
+      });
+    } catch (error){
+      throw error;
+    }
+  }
+
+  Future<void> followObjectif(String id) async{
+    try{
+      var objectif = getObjectifById(id);
+      if(objectif == null) throw Exception("Objectif non disponible");
+
+      loggedIn.followObjectif(objectif);
+
+      var data = {
+        "user" : loggedIn.id,
+        "objectif" : id
+      };
+
+      await _db.collection("Followed").add(data);
+    } catch (exception){
+      throw exception;
+    }
+  }
+
+  Future<void> startExercice(String id) async{
+    try{
+      var exercice = getExerciceById(id);
+      if(exercice == null) throw Exception("Exercice non disponible");
+
+      loggedIn.setCurrentAct(exercice);
+
+      var data = {
+        "dateDebut": loggedIn.getCurrentAct().dateDebut.toIso8601String(), 
+        "client": loggedIn.id,
+        "exercice": id
+      };
+
+      await _db.collection("Activites").document(loggedIn.id + "-" + id).setData(data);
+
+    } catch (error){
       throw error;
     }
   }

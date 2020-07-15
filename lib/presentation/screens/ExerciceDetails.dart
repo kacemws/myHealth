@@ -20,6 +20,14 @@ class ExerciceDetails extends StatelessWidget {
     var _height = MediaQuery.of(context).size.height - MediaQuery.of(context).padding.vertical;
     var _width = MediaQuery.of(context).size.width;
 
+    Future<void> doExercice() async{
+      try{
+        await Provider.of<Health>(context, listen: false).startExercice(exerciceId);
+      }catch(error){
+        print (error);
+      }
+    }
+
     return Scaffold(
       backgroundColor: Colors.grey[100],
       body: SingleChildScrollView(
@@ -81,7 +89,7 @@ class ExerciceDetails extends StatelessWidget {
 
             listOfEtapes(_height,_width, context, exercice.etapes),
 
-            followButton(_height, _width, context), //10%
+            followButton(_height, _width, context, doExercice), //10%
 
 
           ],
@@ -119,8 +127,9 @@ class ExerciceDetails extends StatelessWidget {
     );
   }
 
-  Widget followButton(double _height, double _width, BuildContext context){
+  Widget followButton(double _height, double _width, BuildContext context, Function handler){
     return GestureDetector(
+      onTap: handler,
       child: Container(
 
         height: _height * 0.075,
