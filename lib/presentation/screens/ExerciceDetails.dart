@@ -1,19 +1,21 @@
 
 import 'package:flutter/material.dart';
 import 'package:health_app/models/Health.dart';
+import 'package:health_app/models/data/Difficulte.dart';
 import 'package:health_app/models/data/Exercice.dart';
 import 'package:health_app/presentation/items/ExerciceItem.dart';
 import 'package:provider/provider.dart';
 
-class ObjectifDetails extends StatelessWidget {
+class ExerciceDetails extends StatelessWidget {
 
-  static final String route = "/objectif-details";
+  static final String route = "/exercice-details";
 
   @override
   Widget build(BuildContext context) {
 
-    var objectifId = ModalRoute.of(context).settings.arguments as String;
-    var objectif = Provider.of<Health>(context, listen: false).getObjectifById(objectifId);
+    var exerciceId = ModalRoute.of(context).settings.arguments as String;
+    var exercice = Provider.of<Health>(context, listen: false).getExerciceById(exerciceId);
+
 
     var _height = MediaQuery.of(context).size.height - MediaQuery.of(context).padding.vertical;
     var _width = MediaQuery.of(context).size.width;
@@ -28,10 +30,10 @@ class ObjectifDetails extends StatelessWidget {
               children: <Widget>[
 
                 Hero(
-                  tag: objectif.id,
+                  tag: exercice.id,
                   child: Image.network(
-                    objectif.imageUrl,
-                    height: _height *0.4,
+                    exercice.imageUrl,
+                    height: _height *0.3,
                     width: double.infinity,
                     fit: BoxFit.scaleDown,
                   ),
@@ -59,10 +61,25 @@ class ObjectifDetails extends StatelessWidget {
               ],
             ),
 
-            title(objectif.nom, _height, _width, context, Alignment.center), //10%
+            title(exercice.nom  + " - " + exercice.objectif.nom, _height, _width, context, Alignment.center), //8%
 
-            title(objectif.exercices.length.toString() + " Exercices", _height, _width, context, Alignment.centerLeft), //10%
-            listOfExercices(_height,_width, context, objectif.exercices),
+            Row(
+              children: <Widget>[
+                title("Durée : ", _height, _width, context, Alignment.centerLeft),
+                title(exercice.duree.toString() + " minutes", _height, _width, context, Alignment.centerLeft),
+              ],
+            ),
+
+            Row(
+              children: <Widget>[
+                title("Difficultée : ", _height, _width, context, Alignment.centerLeft),
+                title((exercice.difficulte == Difficulte.facile? "Facile" : exercice.difficulte == Difficulte.moyenne ? "Moyenne" : "Difficile"), _height, _width, context, Alignment.centerLeft),
+              ],
+            ), //10%
+
+            title("Etapes : ", _height, _width, context, Alignment.centerLeft),
+
+            listOfEtapes(_height,_width, context, exercice.etapes),
 
             followButton(_height, _width, context), //10%
 
@@ -77,10 +94,10 @@ class ObjectifDetails extends StatelessWidget {
 
   Widget title(String text, double height, double width, BuildContext context, AlignmentGeometry alignment){
     return Container(
-      height: height *0.08,
+      height: height *0.07,
       margin: EdgeInsets.symmetric(
         horizontal: width *0.05,
-        vertical: height *0.01
+        vertical: height *0.005
       ),
       alignment: alignment,
       child: FittedBox(
@@ -137,34 +154,53 @@ class ObjectifDetails extends StatelessWidget {
     );
   }
   
-  Widget listOfExercices(double height, double width, BuildContext context, List<Exercice> exercices){
+  Widget listOfEtapes(double height, double width, BuildContext context, Map<String,String> etapes){
+    var aux = etapes.entries;
     return Container(
-      height: height *0.325,
+
+      height: height *0.3,
+      width: width,
+
+      margin: EdgeInsets.symmetric(
+        horizontal: width *0.05,
+      ),
+
+      decoration: BoxDecoration(
+        color: Colors.purple[50],
+        borderRadius: BorderRadius.circular(15)
+      ),
 
       child: ListView.builder(
 
-        scrollDirection: Axis.horizontal,
         physics: BouncingScrollPhysics(),
 
-        itemCount: exercices.length,
+        itemCount: aux.length,
 
         itemBuilder: (_,index){
 
-          return Container(
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
 
-            height: height *0.325,
-            width: width *0.45,
+              Text(
+                aux.elementAt(index).key +" : ",
+                style: Theme.of(context).textTheme.body2,
+              ),
 
-            margin: EdgeInsets.symmetric(
-              horizontal: width *0.05,
-              vertical: height *0.01
-            ),
+              SizedBox(
+                width: width * 0.75,
+                height: height * 0.04,
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    aux.elementAt(index).value,
+                    style: Theme.of(context).textTheme.body2,
+                  ),
 
-            child: ChangeNotifierProvider.value(
-              value: exercices[index],
-              child: ExerciceItem(),
-            ),
-
+                ),
+              )
+            ],
           );
           
         }

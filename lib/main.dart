@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:health_app/models/data/Objectif.dart';
+import 'package:health_app/presentation/screens/ExerciceDetails.dart';
 import 'package:health_app/presentation/screens/ObjectifDetails.dart';
 import 'package:provider/provider.dart';
 
@@ -125,6 +126,7 @@ class MyApp extends StatelessWidget {
           // '/': (context) => Authentification(),
           SignupScreen.route: (context) => SignupScreen(),
           ObjectifDetails.route : (context) => ObjectifDetails(),
+          ExerciceDetails.route : (context) => ExerciceDetails(),
         },
       ),
     );

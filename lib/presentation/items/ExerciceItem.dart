@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:health_app/models/data/Difficulte.dart';
+import 'package:health_app/presentation/screens/ExerciceDetails.dart';
 
 import 'package:provider/provider.dart';
 
@@ -9,10 +10,10 @@ import 'package:health_app/models/data/Exercice.dart';
 class ExerciceItem extends StatelessWidget {
 
   showDetails(dynamic context, id){
-    // Navigator.of(context).pushNamed(
-    //   StationDetails.route,
-    //   arguments: id,
-    // );
+    Navigator.of(context).pushNamed(
+      ExerciceDetails.route,
+      arguments: id,
+    );
   }
 
   @override
