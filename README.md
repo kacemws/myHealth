@@ -22,7 +22,8 @@ MyHealth is an app that can help it users acheive certain goals, and that by doi
 :white_check_mark: add exercice details screen. <br/>
 :white_check_mark: add handler to follow objectif. <br/>
 :white_check_mark: add handler to do exercice. <br/>
-:black_square_button: add handler to end activity. <br/>
+:white_check_mark: add handler to unfollow objectif. <br/>
+:white_check_mark: add handler to end activity. <br/>
 :black_square_button: add followed screen. <br/>
 :black_square_button: add profile screen. <br/>
 :black_square_button: add activities history. <br/>

@@ -14,13 +14,14 @@ class ObjectifDetails extends StatelessWidget {
 
     var objectifId = ModalRoute.of(context).settings.arguments as String;
     var objectif = Provider.of<Health>(context, listen: false).getObjectifById(objectifId);
+    var isFollowed = Provider.of<Health>(context, listen: false).loggedIn.followedObjectifs.contains(objectif);
 
     var _height = MediaQuery.of(context).size.height - MediaQuery.of(context).padding.vertical;
     var _width = MediaQuery.of(context).size.width;
 
     Future<void> handleObj() async{
       try{
-        await Provider.of<Health>(context, listen: false).followObjectif(objectifId);
+        await Provider.of<Health>(context, listen: false).handleObjectif(objectifId);
       }catch(error){
         print (error);
       }
@@ -72,7 +73,7 @@ class ObjectifDetails extends StatelessWidget {
             title(objectif.exercices.length.toString() + " Exercices", _height, _width, context, Alignment.centerLeft), //10%
             listOfExercices(_height,_width, context, objectif.exercices),
 
-            followButton(_height, _width, context, handleObj), //10%
+            followButton(_height, _width, context, handleObj, isFollowed), //10%
 
 
           ],
@@ -110,7 +111,7 @@ class ObjectifDetails extends StatelessWidget {
     );
   }
 
-  Widget followButton(double _height, double _width, BuildContext context, Function handler){
+  Widget followButton(double _height, double _width, BuildContext context, Function handler, bool followedObjectif){
     return GestureDetector(
       onTap: handler,
       child: Container(
@@ -140,7 +141,7 @@ class ObjectifDetails extends StatelessWidget {
           ]
         ),
 
-        child: Center(child: Text( "Démarrer", style: Theme.of(context).textTheme.title.copyWith(color:Colors.white),)),
+        child: Center(child: Text( followedObjectif? "Ne plus suivre" : "Suivre", style: Theme.of(context).textTheme.title.copyWith(color:Colors.white),)),
 
       ),
     );

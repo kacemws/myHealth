@@ -17,7 +17,7 @@ class Activite{
   Activite({@required this.id, @required this.dateDebut, @required this.client, @required this.exo});
 
   void terminerActivite(DateTime dateFin){
-    if(dateFin != null) throw HttpException("Activitée déjà terminée!"); // On peut pas terminer une activité qui l'est déjà! donc on throw une exception
+    if(this.dateFin != null) throw HttpException("Activitée déjà terminée!"); // On peut pas terminer une activité qui l'est déjà! donc on throw une exception
     this.dateFin = dateFin;
   }
 

@@ -14,15 +14,17 @@ class ExerciceDetails extends StatelessWidget {
   Widget build(BuildContext context) {
 
     var exerciceId = ModalRoute.of(context).settings.arguments as String;
-    var exercice = Provider.of<Health>(context, listen: false).getExerciceById(exerciceId);
+    var health = Provider.of<Health>(context, listen: false);
 
+    var exercice = health.getExerciceById(exerciceId);
+    var isCurrent = health.loggedIn.getCurrentAct() == null? false : health.loggedIn.getCurrentAct().exo == exercice;
 
     var _height = MediaQuery.of(context).size.height - MediaQuery.of(context).padding.vertical;
     var _width = MediaQuery.of(context).size.width;
 
     Future<void> doExercice() async{
       try{
-        await Provider.of<Health>(context, listen: false).startExercice(exerciceId);
+        await Provider.of<Health>(context, listen: false).handleExercice(exerciceId);
       }catch(error){
         print (error);
       }
@@ -89,7 +91,7 @@ class ExerciceDetails extends StatelessWidget {
 
             listOfEtapes(_height,_width, context, exercice.etapes),
 
-            followButton(_height, _width, context, doExercice), //10%
+            followButton(_height, _width, context, doExercice, isCurrent), //10%
 
 
           ],
@@ -127,7 +129,7 @@ class ExerciceDetails extends StatelessWidget {
     );
   }
 
-  Widget followButton(double _height, double _width, BuildContext context, Function handler){
+  Widget followButton(double _height, double _width, BuildContext context, Function handler, bool isCurrent){
     return GestureDetector(
       onTap: handler,
       child: Container(
@@ -157,7 +159,7 @@ class ExerciceDetails extends StatelessWidget {
           ]
         ),
 
-        child: Center(child: Text( "Démarrer", style: Theme.of(context).textTheme.title.copyWith(color:Colors.white),)),
+        child: Center(child: Text( isCurrent? "Terminer" : "Démarrer", style: Theme.of(context).textTheme.title.copyWith(color:Colors.white),)),
 
       ),
     );

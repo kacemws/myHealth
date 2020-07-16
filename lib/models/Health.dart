@@ -244,39 +244,60 @@ class Health with ChangeNotifier{
     }
   }
 
-  Future<void> followObjectif(String id) async{
+  Future<void> handleObjectif(String id) async{
     try{
+      
       var objectif = getObjectifById(id);
       if(objectif == null) throw Exception("Objectif non disponible");
 
-      loggedIn.followObjectif(objectif);
+      if(loggedIn.followedObjectifs.contains(objectif)){
+        loggedIn.followedObjectifs.remove(objectif);
+        await _db.collection("Followed").document(loggedIn.id + "-" + id).delete();
+        
+      }else{
+        loggedIn.followObjectif(objectif);
 
-      var data = {
-        "user" : loggedIn.id,
-        "objectif" : id
-      };
+        var data = {
+          "user" : loggedIn.id,
+          "objectif" : id
+        };
 
-      await _db.collection("Followed").add(data);
+        await _db.collection("Followed").document(loggedIn.id + "-" + id).setData(data);
+      }
     } catch (exception){
       throw exception;
     }
   }
 
-  Future<void> startExercice(String id) async{
+  Future<void> handleExercice(String id) async{
     try{
+      
       var exercice = getExerciceById(id);
       if(exercice == null) throw Exception("Exercice non disponible");
 
-      loggedIn.setCurrentAct(exercice);
+      if(loggedIn.getCurrentAct() != null && loggedIn.getCurrentAct().exo == exercice){
+        var activity = loggedIn.getCurrentAct();
+        activity.terminerActivite(DateTime.now());
 
-      var data = {
-        "dateDebut": loggedIn.getCurrentAct().dateDebut.toIso8601String(), 
-        "client": loggedIn.id,
-        "exercice": id
-      };
+        await _db.collection("Activites").document(activity.id).updateData({
+          "dateFin" : activity.dateFin.toIso8601String()
+        });
 
-      await _db.collection("Activites").document(loggedIn.id + "-" + id).setData(data);
+      }else{
+        
 
+        loggedIn.setCurrentAct(exercice);
+
+        var data = {
+          "dateDebut": loggedIn.getCurrentAct().dateDebut.toIso8601String(), 
+          "client": loggedIn.id,
+          "exercice": id
+        };
+
+        await _db.collection("Activites").document(loggedIn.id + "-" + id).setData(data);
+
+      }
+    
     } catch (error){
       throw error;
     }
