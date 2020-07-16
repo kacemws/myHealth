@@ -14,7 +14,7 @@ class ExerciceDetails extends StatelessWidget {
   Widget build(BuildContext context) {
 
     var exerciceId = ModalRoute.of(context).settings.arguments as String;
-    var health = Provider.of<Health>(context, listen: false);
+    var health = Provider.of<Health>(context);
 
     var exercice = health.getExerciceById(exerciceId);
     var isCurrent = health.loggedIn.getCurrentAct() == null? false : health.loggedIn.getCurrentAct().exo == exercice;

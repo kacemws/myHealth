@@ -8,7 +8,8 @@ import 'package:provider/provider.dart';
 import 'package:health_app/models/data/Exercice.dart';
 
 class ExerciceItem extends StatelessWidget {
-
+  final String heroTag;
+  ExerciceItem({@required this.heroTag});
   showDetails(dynamic context, id){
     Navigator.of(context).pushNamed(
       ExerciceDetails.route,
@@ -56,7 +57,7 @@ class ExerciceItem extends StatelessWidget {
             children: <Widget>[
 
               Hero(
-                tag: exercice.id,
+                tag: heroTag,
                 child: ClipRRect(/*Force a widget to be inside of the mother widget border*/
                   child: Image.network(
                     exercice.imageUrl,

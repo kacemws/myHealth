@@ -4,17 +4,38 @@ import 'package:health_app/models/Health.dart';
 import 'package:health_app/models/data/Exercice.dart';
 import 'package:health_app/models/data/Objectif.dart';
 import 'package:health_app/presentation/items/ExerciceItem.dart';
-import 'package:health_app/presentation/items/objectifItem.dart';
+import 'package:health_app/presentation/items/followedObjectif.dart';
 import 'package:provider/provider.dart';
 
-class HomePage extends StatelessWidget {
+class FollowedPage extends StatefulWidget {
+  @override
+  _FollowedPageState createState() => _FollowedPageState();
+}
+
+class _FollowedPageState extends State<FollowedPage> {
+
+  Objectif selected;
+  List<Objectif> objectifs;
+
+  @override
+  void initState() {
+    super.initState();
+    objectifs = Provider.of<Health>(context, listen: false).loggedIn.followedObjectifs;
+    print(objectifs.length);
+    this.selected =  objectifs.length == 0? null : objectifs.first;
+  }
+
+  void setSelected(Objectif newObjectif){
+    if(selected != newObjectif)
+      setState(() {
+        this.selected = newObjectif;
+      });
+  }
+
   @override
   Widget build(BuildContext context) {
 
-    var health = Provider.of<Health>(context);
-
-    var objectifs = health.objectifs;
-    var exercices = health.exercicesRecommande();
+    List<Exercice> exercices = selected != null? selected.exercices : [];
     
     return LayoutBuilder(
       builder: (_,constraints)=> Container(
@@ -23,21 +44,39 @@ class HomePage extends StatelessWidget {
         height: constraints.maxHeight,
         color: Colors.grey[100],
 
-        child: SingleChildScrollView(
+        child: selected == null?
+
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+
+            Image.asset(
+              "assets/NoItemFound.png",
+              fit: BoxFit.scaleDown,
+              height: constraints.maxHeight *0.5,
+            ),
+
+            title("Veuillez Suivre Des Objectifs!!", constraints, context, Alignment.center)
+          ],
+        ):
+
+        SingleChildScrollView(
+
           physics: BouncingScrollPhysics(),
           child: Column(
+
             children: <Widget>[
 
               space(constraints.maxHeight * 0.05),//0.05
 
-              userGreeting(constraints.maxHeight, constraints.maxWidth, context, health.loggedIn.prenom), //0.1
+              userGreeting(constraints.maxHeight, constraints.maxWidth, context), //0.1
               //space(constraints.maxHeight * 0.025),//0.025
 
-              title("Objectifs Populaire",constraints, context),//0.1
-              listOfObjectifs(constraints, context, objectifs),//0.25
+              listOfObjectifs(constraints, context, objectifs, setSelected, selected),//0.25
               space(constraints.maxHeight * 0.0125),//0.025
 
-              title("Exercices Recommandés",constraints, context),//0.1
+              title("Exercices Disponibles",constraints, context, Alignment.centerLeft),//0.1
               listOfExercices(constraints, context, exercices),//0.25
               space(constraints.maxHeight * 0.025),//0.025
             ],
@@ -48,15 +87,13 @@ class HomePage extends StatelessWidget {
     
   }
 
-
   Widget space(double spaceHeight){
     return SizedBox(
       height: spaceHeight
     );
   }
 
-
-  Widget userGreeting(double height,double width, BuildContext context, String userName){
+  Widget userGreeting(double height,double width, BuildContext context){
 
     return Container(
       margin: EdgeInsets.symmetric(
@@ -70,21 +107,10 @@ class HomePage extends StatelessWidget {
 
 
           Text(
-            DateTime.now().hour < 18? "Bonjour," : "Bonsoir,",
+            "Objectifs Suivis",
             style: Theme.of(context).textTheme.display2.copyWith(
               color: Colors.purple[400],
               fontWeight: FontWeight.bold
-            ),
-          ),
-
-          FittedBox(
-            fit: BoxFit.scaleDown,
-            child: Text(
-              userName + "!",
-              style: Theme.of(context).textTheme.display2.copyWith(
-                color: Colors.purple[400],
-                fontWeight: FontWeight.bold
-              ),
             ),
           ),
 
@@ -94,14 +120,14 @@ class HomePage extends StatelessWidget {
 
   }
 
-  Widget title(String text, BoxConstraints constraints, BuildContext context, {AlignmentGeometry alignment}){
+  Widget title(String text, BoxConstraints constraints, BuildContext context, AlignmentGeometry alignment){
     return Container(
       height: constraints.maxHeight *0.08,
       margin: EdgeInsets.symmetric(
         horizontal: constraints.maxWidth *0.05,
         vertical: constraints.maxHeight *0.01
       ),
-      alignment: alignment??Alignment.centerLeft,
+      alignment: alignment,
       child: FittedBox(
         fit:BoxFit.scaleDown,
         child: Text(
@@ -115,7 +141,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget listOfObjectifs(BoxConstraints constraints, BuildContext context, List<Objectif> objectifs){
+  Widget listOfObjectifs(BoxConstraints constraints, BuildContext context, List<Objectif> objectifs, Function handler, Objectif selected){
     return Container(
       height: constraints.maxHeight *0.35,
       
@@ -140,7 +166,7 @@ class HomePage extends StatelessWidget {
 
             child: ChangeNotifierProvider.value(
               value: objectifs[index],
-              child: ObjectifItem(),
+              child: FollowedObjectif(isActive: objectifs[index] == selected, handler: handler),
             ),
 
           );
@@ -154,21 +180,7 @@ class HomePage extends StatelessWidget {
     return Container(
       height: constraints.maxHeight *0.45,
 
-      child: exercices.length == 0? 
-      Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-
-          Image.asset(
-            "assets/NoItemFound.png",
-            fit: BoxFit.scaleDown,
-            height: constraints.maxHeight *0.35,
-          ),
-
-          title("Veuillez Suivre Des Objectifs!!", constraints, context, alignment : Alignment.center)
-        ],
-      ):ListView.builder(
+      child: ListView.builder(
 
         scrollDirection: Axis.horizontal,
         physics: BouncingScrollPhysics(),
@@ -190,7 +202,7 @@ class HomePage extends StatelessWidget {
             child: ChangeNotifierProvider.value(
               value: exercices[index],
               child: ExerciceItem(
-                heroTag: exercices[index].id +"-HomeScreen",
+                heroTag : exercices[index].id + "-followedScreen"
               ),
             ),
 
@@ -201,5 +213,4 @@ class HomePage extends StatelessWidget {
     );
 
   }
-  
 }

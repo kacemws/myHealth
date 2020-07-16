@@ -13,8 +13,9 @@ class ObjectifDetails extends StatelessWidget {
   Widget build(BuildContext context) {
 
     var objectifId = ModalRoute.of(context).settings.arguments as String;
-    var objectif = Provider.of<Health>(context, listen: false).getObjectifById(objectifId);
-    var isFollowed = Provider.of<Health>(context, listen: false).loggedIn.followedObjectifs.contains(objectif);
+    var health = Provider.of<Health>(context);
+    var objectif = health.getObjectifById(objectifId);
+    var isFollowed = health.loggedIn.followedObjectifs.contains(objectif);
 
     var _height = MediaQuery.of(context).size.height - MediaQuery.of(context).padding.vertical;
     var _width = MediaQuery.of(context).size.width;
@@ -172,7 +173,9 @@ class ObjectifDetails extends StatelessWidget {
 
             child: ChangeNotifierProvider.value(
               value: exercices[index],
-              child: ExerciceItem(),
+              child: ExerciceItem(
+                heroTag: exercices[index].id +"-Objectif",
+              ),
             ),
 
           );

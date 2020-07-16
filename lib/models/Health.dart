@@ -264,6 +264,7 @@ class Health with ChangeNotifier{
 
         await _db.collection("Followed").document(loggedIn.id + "-" + id).setData(data);
       }
+      notifyListeners();
     } catch (exception){
       throw exception;
     }
@@ -278,8 +279,8 @@ class Health with ChangeNotifier{
       if(loggedIn.getCurrentAct() != null && loggedIn.getCurrentAct().exo == exercice){
         var activity = loggedIn.getCurrentAct();
         activity.terminerActivite(DateTime.now());
-
-        await _db.collection("Activites").document(activity.id).updateData({
+        print(activity.id);
+        await _db.collection("Activites").document(loggedIn.id + "-" + id).updateData({
           "dateFin" : activity.dateFin.toIso8601String()
         });
 
@@ -297,6 +298,8 @@ class Health with ChangeNotifier{
         await _db.collection("Activites").document(loggedIn.id + "-" + id).setData(data);
 
       }
+
+      notifyListeners();
     
     } catch (error){
       throw error;
