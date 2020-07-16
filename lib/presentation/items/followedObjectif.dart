@@ -24,8 +24,8 @@ class FollowedObjectif extends StatelessWidget {
 
         splashColor: Colors.purple[900],
 
-        child:Container(
-
+        child:AnimatedContainer(
+          duration: Duration(milliseconds: 350),
           height: constraint.maxHeight,
           width: constraint.maxWidth, 
 

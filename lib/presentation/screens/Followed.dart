@@ -57,7 +57,7 @@ class _FollowedPageState extends State<FollowedPage> {
               height: constraints.maxHeight *0.5,
             ),
 
-            title("Veuillez Suivre Des Objectifs!!", constraints, context, Alignment.center)
+            title("Veuillez Suivre Des Objectifs!!", constraints, Alignment.center)
           ],
         ):
 
@@ -70,14 +70,14 @@ class _FollowedPageState extends State<FollowedPage> {
 
               space(constraints.maxHeight * 0.05),//0.05
 
-              userGreeting(constraints.maxHeight, constraints.maxWidth, context), //0.1
+              userGreeting(constraints.maxHeight, constraints.maxWidth), //0.1
               //space(constraints.maxHeight * 0.025),//0.025
 
-              listOfObjectifs(constraints, context, objectifs, setSelected, selected),//0.25
+              listOfObjectifs(constraints, objectifs),//0.25
               space(constraints.maxHeight * 0.0125),//0.025
 
-              title("Exercices Disponibles",constraints, context, Alignment.centerLeft),//0.1
-              listOfExercices(constraints, context, exercices),//0.25
+              title("Exercices Disponibles",constraints, Alignment.centerLeft),//0.1
+              listOfExercices(constraints, exercices),//0.25
               space(constraints.maxHeight * 0.025),//0.025
             ],
           ),
@@ -93,7 +93,7 @@ class _FollowedPageState extends State<FollowedPage> {
     );
   }
 
-  Widget userGreeting(double height,double width, BuildContext context){
+  Widget userGreeting(double height,double width){
 
     return Container(
       margin: EdgeInsets.symmetric(
@@ -120,7 +120,7 @@ class _FollowedPageState extends State<FollowedPage> {
 
   }
 
-  Widget title(String text, BoxConstraints constraints, BuildContext context, AlignmentGeometry alignment){
+  Widget title(String text, BoxConstraints constraints, AlignmentGeometry alignment){
     return Container(
       height: constraints.maxHeight *0.08,
       margin: EdgeInsets.symmetric(
@@ -141,7 +141,7 @@ class _FollowedPageState extends State<FollowedPage> {
     );
   }
 
-  Widget listOfObjectifs(BoxConstraints constraints, BuildContext context, List<Objectif> objectifs, Function handler, Objectif selected){
+  Widget listOfObjectifs(BoxConstraints constraints, List<Objectif> objectifs){
     return Container(
       height: constraints.maxHeight *0.35,
       
@@ -166,7 +166,7 @@ class _FollowedPageState extends State<FollowedPage> {
 
             child: ChangeNotifierProvider.value(
               value: objectifs[index],
-              child: FollowedObjectif(isActive: objectifs[index] == selected, handler: handler),
+              child: FollowedObjectif(isActive: objectifs[index] == selected, handler: this.setSelected),
             ),
 
           );
@@ -176,7 +176,7 @@ class _FollowedPageState extends State<FollowedPage> {
     );
   }
 
-  Widget listOfExercices(BoxConstraints constraints, BuildContext context, List<Exercice> exercices){
+  Widget listOfExercices(BoxConstraints constraints, List<Exercice> exercices){
     return Container(
       height: constraints.maxHeight *0.45,
 

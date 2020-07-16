@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:health_app/presentation/screens/ActivitiesHistory.dart';
 import 'package:health_app/presentation/screens/Followed.dart';
 import 'package:health_app/presentation/screens/HomePage.dart';
 import 'package:provider/provider.dart';
@@ -40,7 +41,7 @@ class _MainAppScreenState extends State<MainAppScreen> {
   Widget bodyBuilder(){
     if(currentIndex == 0) return HomePage();
     if(currentIndex == 1) return FollowedPage();
-    // if(currentIndex == 2) return Rentals();
+    if(currentIndex == 2) return ActivitiesHistory();
     // return ProfilePage();
     return HomePage();
   }

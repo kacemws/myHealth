@@ -60,12 +60,12 @@ class Health with ChangeNotifier{
   }
 
   List<Exercice> exercicesRecommande() {
-    List<Exercice> doneExercies = loggedIn.doneExercices();
+    List<Exercice> doneExercices = loggedIn.doneExercices();
     List<Exercice> aux = [];
 
     for (Exercice exercice in _exercices) { // on parcours les exercices disponible
 
-      if(!doneExercies.contains(exercice) && loggedIn.followedObjectifs.contains(exercice.objectif) ){ // on vérifie que l'exercice n'est pas déjà fait et qu'il réalise un des objectifs suivis
+      if(!doneExercices.contains(exercice) && loggedIn.followedObjectifs.contains(exercice.objectif) ){ // on vérifie que l'exercice n'est pas déjà fait et qu'il réalise un des objectifs suivis
         aux.add(exercice);
       }
 
@@ -75,6 +75,16 @@ class Health with ChangeNotifier{
 
   }
   
+  List<Exercice> exerciceParJours(DateTime selectedDay){
+    List<Activite> doneExercices = loggedIn.activites;
+    List<Exercice> aux = [];
+
+    doneExercices.forEach((activity){
+      if(activity.dateFin != null && activity.dateFin.year ==  selectedDay.year && activity.dateFin.month == selectedDay.month && activity.dateFin.day ==  selectedDay.day) aux.add(activity.exo);
+    });
+
+    return aux;
+  }
 
 
   Future<void> fetchData() async{
@@ -194,8 +204,7 @@ class Health with ChangeNotifier{
   Future<void> fetchActivities() async{
 
     try{
-
-      final snapshot = await _db.collection("Activites").getDocuments();
+      final snapshot = await _db.collection("Activites").where("client", isEqualTo: loggedIn.id).getDocuments();
 
       loggedIn.activites = [];  
 
@@ -228,7 +237,7 @@ class Health with ChangeNotifier{
   Future<void> fetchFollowed() async{
     try{
 
-      final snapshot = await _db.collection("Followed").getDocuments();
+      final snapshot = await _db.collection("Followed").where("user", isEqualTo: loggedIn.id).getDocuments();
       loggedIn.followedObjectifs = [];
 
       snapshot.documents.forEach((document) async{
