@@ -167,7 +167,7 @@ class _ActivitiesHistoryState extends State<ActivitiesHistory> {
 
             decoration: BoxDecoration(
               color: week[index].day == selectedDate.day? Colors.purple[200] : Colors.purple[50],
-              borderRadius: BorderRadius.circular(5)
+              borderRadius: BorderRadius.circular(15)
             ),
 
             child: Column(

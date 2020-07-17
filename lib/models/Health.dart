@@ -210,22 +210,20 @@ class Health with ChangeNotifier{
 
       snapshot.documents.forEach((document) async{
 
-        if(document.documentID.contains(loggedIn.id)){
-          print("got activity "+document.documentID);
+        print("got activity "+document.documentID);
         
-          var data = document.data;
+        var data = document.data;
 
-          var aux = Activite(
-            id: document.documentID, 
-            dateDebut: DateTime.parse(data["dateDebut"]), 
-            client: loggedIn,
-            exo: getExerciceById(data["exercice"])
-          );
+        var aux = Activite(
+          id: document.documentID, 
+          dateDebut: DateTime.parse(data["dateDebut"]), 
+          client: loggedIn,
+          exo: getExerciceById(data["exercice"])
+        );
 
-          if(data.containsKey("dateFin")) aux.terminerActivite(DateTime.parse(data["dateFin"]));
+        if(data.containsKey("dateFin")) aux.terminerActivite(DateTime.parse(data["dateFin"]));
 
-          this.loggedIn.activites.add(aux);
-        }
+        this.loggedIn.activites.add(aux);
         
       });
 
@@ -242,10 +240,8 @@ class Health with ChangeNotifier{
 
       snapshot.documents.forEach((document) async{
 
-        if(document.data["user"] == loggedIn.id){
-          print("got followed objectif "+document.documentID);
-          this.loggedIn.followedObjectifs.add(getObjectifById(document.data["objectif"]));
-        }
+        print("got followed objectif "+document.documentID);
+        this.loggedIn.followedObjectifs.add(getObjectifById(document.data["objectif"]));
         
       });
     } catch (error){
@@ -295,7 +291,9 @@ class Health with ChangeNotifier{
 
       }else{
         
-
+        if( ! loggedIn.followedObjectifs.contains(exercice.objectif)){
+          await handleObjectif(exercice.objectif.id);
+        }
         loggedIn.setCurrentAct(exercice);
 
         var data = {
